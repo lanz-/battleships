@@ -1,0 +1,246 @@
+[gd_scene load_steps=18 format=3 uid="uid://cem2h2jy6cqjp"]
+
+[ext_resource type="Script" path="res://scripts/playfield.gd" id="1_asv1g"]
+[ext_resource type="Texture2D" uid="uid://dgvv5tnl0r4y4" path="res://resources/grid.svg" id="2_o8cwq"]
+[ext_resource type="Script" path="res://scripts/drag_plane.gd" id="3_62url"]
+[ext_resource type="PackedScene" uid="uid://bqr413g1o7ox5" path="res://scenes/ship_prefab.tscn" id="5_git4x"]
+[ext_resource type="ArrayMesh" uid="uid://c5kosh5coif3p" path="res://resources/ship1_1.obj" id="5_mjr2y"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_re3hh"]
+albedo_texture = ExtResource("2_o8cwq")
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_mgl8l"]
+material = SubResource("StandardMaterial3D_re3hh")
+size = Vector2(10, 10)
+
+[sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_whlvm"]
+
+[sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_1uugk"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_q48ue"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ya65d"]
+size = Vector3(2, 1, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_6vklr"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_g3tl3"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_dgtfp"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_e3wms"]
+size = Vector3(3, 1, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_k4kaj"]
+size = Vector3(4, 1, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_vriqi"]
+
+[node name="playfield" type="Node3D"]
+script = ExtResource("1_asv1g")
+
+[node name="main_camera" type="Camera3D" parent="."]
+transform = Transform3D(-0.707107, 0.5, -0.5, 0, 0.707107, 0.707107, 0.707107, 0.5, -0.5, -4.03, 9.65, -3.96)
+fov = 40.0
+size = 15.0
+
+[node name="main_light" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.612373, 0.5, -0.612372, 0.353553, 0.866025, 0.353553, 0.707107, 6.32203e-08, -0.707107, -10, 10, -10)
+
+[node name="grid_plane" type="StaticBody3D" parent="."]
+
+[node name="grid" type="MeshInstance3D" parent="grid_plane"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.46, 0, 4.46)
+mesh = SubResource("PlaneMesh_mgl8l")
+skeleton = NodePath("../..")
+
+[node name="floor_collider" type="CollisionShape3D" parent="grid_plane"]
+shape = SubResource("WorldBoundaryShape3D_whlvm")
+
+[node name="drag_plane" type="Area3D" parent="grid_plane" node_paths=PackedStringArray("camera")]
+collision_layer = 2
+collision_mask = 2
+input_ray_pickable = false
+script = ExtResource("3_62url")
+camera = NodePath("../../main_camera")
+
+[node name="drag_collider" type="CollisionShape3D" parent="grid_plane/drag_plane"]
+shape = SubResource("WorldBoundaryShape3D_1uugk")
+
+[node name="ships" type="Node3D" parent="."]
+
+[node name="ship1_1" parent="ships" node_paths=PackedStringArray("playfield") instance=ExtResource("5_git4x")]
+transform = Transform3D(0.976076, 0, 0.217428, 0, 1, 0, -0.217428, 0, 0.976076, -2, 0.5, 2.40091)
+playfield = NodePath("../..")
+metadata/_edit_group_ = true
+
+[node name="collider" type="CollisionShape3D" parent="ships/ship1_1"]
+shape = SubResource("BoxShape3D_q48ue")
+
+[node name="ship_root" type="Node3D" parent="ships/ship1_1"]
+
+[node name="segment_1" type="MeshInstance3D" parent="ships/ship1_1/ship_root"]
+mesh = ExtResource("5_mjr2y")
+
+[node name="ship1_2" parent="ships" node_paths=PackedStringArray("playfield") instance=ExtResource("5_git4x")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0.5, 3.67652)
+playfield = NodePath("../..")
+metadata/_edit_group_ = true
+
+[node name="collider" type="CollisionShape3D" parent="ships/ship1_2"]
+shape = SubResource("BoxShape3D_q48ue")
+
+[node name="ship_root" type="Node3D" parent="ships/ship1_2"]
+
+[node name="segment_1" type="MeshInstance3D" parent="ships/ship1_2/ship_root"]
+mesh = ExtResource("5_mjr2y")
+
+[node name="ship1_3" parent="ships" node_paths=PackedStringArray("playfield") instance=ExtResource("5_git4x")]
+transform = Transform3D(0.993999, 0, 0.109387, 0, 1, 0, -0.109387, 0, 0.993999, -2, 0.5, 4.95546)
+playfield = NodePath("../..")
+metadata/_edit_group_ = true
+
+[node name="collider" type="CollisionShape3D" parent="ships/ship1_3"]
+shape = SubResource("BoxShape3D_q48ue")
+
+[node name="ship_root" type="Node3D" parent="ships/ship1_3"]
+
+[node name="segment_1" type="MeshInstance3D" parent="ships/ship1_3/ship_root"]
+mesh = ExtResource("5_mjr2y")
+
+[node name="ship1_4" parent="ships" node_paths=PackedStringArray("playfield") instance=ExtResource("5_git4x")]
+transform = Transform3D(0.976781, 0, -0.214241, 0, 1, 0, 0.214241, 0, 0.976781, -2, 0.5, 6.26906)
+playfield = NodePath("../..")
+metadata/_edit_group_ = true
+
+[node name="collider" type="CollisionShape3D" parent="ships/ship1_4"]
+shape = SubResource("BoxShape3D_q48ue")
+
+[node name="ship_root" type="Node3D" parent="ships/ship1_4"]
+
+[node name="segment_1" type="MeshInstance3D" parent="ships/ship1_4/ship_root"]
+mesh = ExtResource("5_mjr2y")
+
+[node name="ship2_1" parent="ships" node_paths=PackedStringArray("playfield") instance=ExtResource("5_git4x")]
+transform = Transform3D(-0.984808, 0, -0.173648, 0, 1, 0, 0.173648, 0, -0.984808, 1.12204, 0.5, -1.79866)
+playfield = NodePath("../..")
+metadata/_edit_group_ = true
+
+[node name="collider" type="CollisionShape3D" parent="ships/ship2_1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0, 0)
+shape = SubResource("BoxShape3D_ya65d")
+
+[node name="ship_root" type="Node3D" parent="ships/ship2_1"]
+
+[node name="segment_1" type="MeshInstance3D" parent="ships/ship2_1/ship_root"]
+mesh = SubResource("BoxMesh_6vklr")
+
+[node name="segment_2" type="MeshInstance3D" parent="ships/ship2_1/ship_root"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0, 0)
+mesh = SubResource("BoxMesh_g3tl3")
+
+[node name="ship2_2" parent="ships" node_paths=PackedStringArray("playfield") instance=ExtResource("5_git4x")]
+transform = Transform3D(-0.973243, 0, -0.229778, 0, 1, 0, 0.229778, 0, -0.973243, 3.7767, 0.5, -1.79866)
+playfield = NodePath("../..")
+metadata/_edit_group_ = true
+
+[node name="collider" type="CollisionShape3D" parent="ships/ship2_2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0, 0)
+shape = SubResource("BoxShape3D_ya65d")
+
+[node name="ship_root" type="Node3D" parent="ships/ship2_2"]
+
+[node name="segment_1" type="MeshInstance3D" parent="ships/ship2_2/ship_root"]
+mesh = SubResource("BoxMesh_6vklr")
+
+[node name="segment_2" type="MeshInstance3D" parent="ships/ship2_2/ship_root"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0, 0)
+mesh = SubResource("BoxMesh_g3tl3")
+
+[node name="ship2_3" parent="ships" node_paths=PackedStringArray("playfield") instance=ExtResource("5_git4x")]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 6.46445, 0.5, -1.79866)
+playfield = NodePath("../..")
+metadata/_edit_group_ = true
+
+[node name="collider" type="CollisionShape3D" parent="ships/ship2_3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0, 0)
+shape = SubResource("BoxShape3D_ya65d")
+
+[node name="ship_root" type="Node3D" parent="ships/ship2_3"]
+
+[node name="segment_1" type="MeshInstance3D" parent="ships/ship2_3/ship_root"]
+mesh = SubResource("BoxMesh_6vklr")
+
+[node name="segment_2" type="MeshInstance3D" parent="ships/ship2_3/ship_root"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0, 0)
+mesh = SubResource("BoxMesh_g3tl3")
+
+[node name="ship3_1" parent="ships" node_paths=PackedStringArray("playfield") instance=ExtResource("5_git4x")]
+transform = Transform3D(0.120189, 0, -0.992751, 0, 1, 0, 0.992751, 0, 0.120189, 11.9419, 0, 3.35742)
+playfield = NodePath("../..")
+metadata/_edit_group_ = true
+
+[node name="ship_root" type="Node3D" parent="ships/ship3_1"]
+
+[node name="segment_1" type="MeshInstance3D" parent="ships/ship3_1/ship_root"]
+mesh = SubResource("BoxMesh_dgtfp")
+
+[node name="segment_2" type="MeshInstance3D" parent="ships/ship3_1/ship_root"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0, 0)
+mesh = SubResource("BoxMesh_dgtfp")
+
+[node name="segment_3" type="MeshInstance3D" parent="ships/ship3_1/ship_root"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 0)
+mesh = SubResource("BoxMesh_dgtfp")
+
+[node name="collider" type="CollisionShape3D" parent="ships/ship3_1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0, 0)
+shape = SubResource("BoxShape3D_e3wms")
+
+[node name="ship3_2" parent="ships" node_paths=PackedStringArray("playfield") instance=ExtResource("5_git4x")]
+transform = Transform3D(0.316858, 0, -0.948473, 0, 1, 0, 0.948473, 0, 0.316858, 11.9419, 0, 7.09174)
+playfield = NodePath("../..")
+metadata/_edit_group_ = true
+
+[node name="ship_root" type="Node3D" parent="ships/ship3_2"]
+
+[node name="segment_1" type="MeshInstance3D" parent="ships/ship3_2/ship_root"]
+mesh = SubResource("BoxMesh_dgtfp")
+
+[node name="segment_2" type="MeshInstance3D" parent="ships/ship3_2/ship_root"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0, 0)
+mesh = SubResource("BoxMesh_dgtfp")
+
+[node name="segment_3" type="MeshInstance3D" parent="ships/ship3_2/ship_root"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 0)
+mesh = SubResource("BoxMesh_dgtfp")
+
+[node name="collider" type="CollisionShape3D" parent="ships/ship3_2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0, 0)
+shape = SubResource("BoxShape3D_e3wms")
+
+[node name="ship4_1" parent="ships" node_paths=PackedStringArray("playfield") instance=ExtResource("5_git4x")]
+transform = Transform3D(-0.996571, 0, -0.0827387, 0, 1, 0, 0.0827387, 0, -0.996571, 2.93776, 0, 11.1406)
+playfield = NodePath("../..")
+metadata/_edit_group_ = true
+
+[node name="collider" type="CollisionShape3D" parent="ships/ship4_1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 0, 0)
+shape = SubResource("BoxShape3D_k4kaj")
+
+[node name="ship_root" type="Node3D" parent="ships/ship4_1"]
+
+[node name="segment_1" type="MeshInstance3D" parent="ships/ship4_1/ship_root"]
+mesh = SubResource("BoxMesh_vriqi")
+
+[node name="segment_2" type="MeshInstance3D" parent="ships/ship4_1/ship_root"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0, 0)
+mesh = SubResource("BoxMesh_vriqi")
+
+[node name="segment_3" type="MeshInstance3D" parent="ships/ship4_1/ship_root"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 0)
+mesh = SubResource("BoxMesh_vriqi")
+
+[node name="segment_4" type="MeshInstance3D" parent="ships/ship4_1/ship_root"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0, 0)
+mesh = SubResource("BoxMesh_vriqi")

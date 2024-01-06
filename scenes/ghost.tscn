@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://dc4sesecccwht"]
+
+[ext_resource type="Script" path="res://scripts/ghost.gd" id="1_6dprg"]
+
+[node name="ghost" type="Node3D"]
+script = ExtResource("1_6dprg")
