@@ -8,4 +8,3 @@ script = ExtResource("1_6xv5e")
 [node name="drag_timer" type="Timer" parent="."]
 
 [connection signal="input_event" from="." to="." method="_on_input_event"]
-[connection signal="timeout" from="drag_timer" to="." method="_on_drag_timer_timeout"]

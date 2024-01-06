@@ -1,0 +1,21 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://cvkvh0owfbuag"
+path="res://.godot/imported/ship2_2.obj-d820a922b986f143f45fd541587c7814.mesh"
+
+[deps]
+
+files=["res://.godot/imported/ship2_2.obj-d820a922b986f143f45fd541587c7814.mesh"]
+
+source_file="res://resources/ship2_2.obj"
+dest_files=["res://.godot/imported/ship2_2.obj-d820a922b986f143f45fd541587c7814.mesh", "res://.godot/imported/ship2_2.obj-d820a922b986f143f45fd541587c7814.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true

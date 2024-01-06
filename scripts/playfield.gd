@@ -115,6 +115,18 @@ func _do_drag(time):
 
 		_animate_move(_ghost, drag_trans, time)
 
+
+func abort_drag():
+	if not _drag:
+		return
+		
+	_drag = false
+
+	_ghost.queue_free()
+	_ghost = null
+	_draggable = null
+
+
 func stop_drag():
 	if not _drag:
 		return
