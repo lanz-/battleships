@@ -53,18 +53,8 @@ func start_drag(draggable: Node):
 	_ghost = draggable.ghost_scene.instantiate()
 	add_child(_ghost)
 
-	drag_trans = draggable.global_transform
-	
-	var init_rot_q = drag_trans.basis.get_rotation_quaternion()
-	var t1q = TRANSFORM1.basis.get_rotation_quaternion()
-	var t2q = TRANSFORM2.basis.get_rotation_quaternion()
-	var tbasis = TRANSFORM2.basis
-	if t1q.angle_to(init_rot_q) < t2q.angle_to(init_rot_q):
-		tbasis = TRANSFORM1.basis
-
-	drag_trans = Transform3D(tbasis, drag_trans.origin)
+	drag_trans = draggable.align()
 	_ghost.global_transform = drag_trans
-	
 	_drag_offset = drag_trans.origin - drag_plane.target_pos
 	
 	_drag = true
@@ -131,6 +121,7 @@ func stop_drag():
 		
 	_drag = false
 
+	_draggable.aligned = true
 	_animate_move(_draggable, drag_trans, 0.2)
 	_tween.tween_callback(_validate_ships)
 	_ghost.queue_free()

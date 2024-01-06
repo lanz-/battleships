@@ -11,6 +11,13 @@ var wrong_material = preload("res://resources/ship_wrong_material.tres")
 @onready var shape_root = $ship_root
 @onready var _drag_timer = $drag_timer
 
+const ONE_ROT = deg_to_rad(90)
+
+@onready var TRANSFORM1 = Transform3D.IDENTITY.rotated(Vector3.UP, -ONE_ROT)
+@onready var TRANSFORM2 = Transform3D.IDENTITY.rotated(Vector3.UP, -(2 * ONE_ROT))
+
+var aligned = false
+
 
 func _ready():
 	var ghost = ghost_prefab.instantiate()
@@ -23,6 +30,21 @@ func _ready():
 	_drag_timer.autostart = false
 	_drag_timer.one_shot = true
 	_drag_timer.wait_time = drag_time
+
+
+func align():
+	var trans: Transform3D = global_transform
+	if aligned:
+		return trans
+	
+	var init_rot_q = trans.basis.get_rotation_quaternion()
+	var t1q = TRANSFORM1.basis.get_rotation_quaternion()
+	var t2q = TRANSFORM2.basis.get_rotation_quaternion()
+	var tbasis = TRANSFORM2.basis
+	if t1q.angle_to(init_rot_q) < t2q.angle_to(init_rot_q):
+		tbasis = TRANSFORM1.basis
+
+	return Transform3D(tbasis, trans.origin)
 
 func get_points():
 	var points: Array[Vector3] = []
