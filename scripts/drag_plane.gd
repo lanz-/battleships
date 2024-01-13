@@ -1,13 +1,13 @@
 extends Area3D
 
 
-@export var camera: Camera3D = null
+var camera: Camera3D = null
 var target_pos: Vector3 = Vector3.ZERO
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass # Replace with function body.
+	camera = get_viewport().get_camera_3d()
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -27,4 +27,4 @@ func _physics_process(delta):
 	
 	var result = space_state.intersect_ray(query)
 	if result:
-		target_pos = result.position
+		target_pos = to_local(result.position)

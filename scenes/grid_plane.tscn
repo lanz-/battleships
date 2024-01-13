@@ -1,0 +1,29 @@
+[gd_scene load_steps=6 format=3 uid="uid://cg4anskkex7yw"]
+
+[ext_resource type="Texture2D" uid="uid://dgvv5tnl0r4y4" path="res://resources/grid.svg" id="1_38p3f"]
+[ext_resource type="Script" path="res://scripts/drag_plane.gd" id="2_eb4o8"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_re3hh"]
+albedo_texture = ExtResource("1_38p3f")
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_mgl8l"]
+material = SubResource("StandardMaterial3D_re3hh")
+size = Vector2(10, 10)
+
+[sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_1uugk"]
+
+[node name="grid_plane" type="Node3D"]
+
+[node name="grid" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.46, 0, 4.46)
+mesh = SubResource("PlaneMesh_mgl8l")
+skeleton = NodePath("../..")
+
+[node name="drag_plane" type="Area3D" parent="."]
+collision_layer = 2
+collision_mask = 2
+input_ray_pickable = false
+script = ExtResource("2_eb4o8")
+
+[node name="drag_collider" type="CollisionShape3D" parent="drag_plane"]
+shape = SubResource("WorldBoundaryShape3D_1uugk")

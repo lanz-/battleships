@@ -1,0 +1,61 @@
+[gd_scene load_steps=3 format=3 uid="uid://7xpyc1y76rkh"]
+
+[ext_resource type="PackedScene" uid="uid://cem2h2jy6cqjp" path="res://scenes/playfield.tscn" id="1_4vm7w"]
+[ext_resource type="Script" path="res://scripts/main.gd" id="1_w32tw"]
+
+[node name="Main" type="Node3D"]
+script = ExtResource("1_w32tw")
+
+[node name="Ui" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+
+[node name="TopWindow" type="MarginContainer" parent="Ui"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.985
+anchor_top = 0.015
+anchor_right = 0.985
+anchor_bottom = 0.015
+offset_left = -200.0
+offset_bottom = 220.0
+grow_horizontal = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Ui/TopWindow"]
+layout_mode = 2
+
+[node name="StartButton" type="Button" parent="Ui/TopWindow/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "START"
+
+[node name="RandomizeButton" type="Button" parent="Ui/TopWindow/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "RANDOMIZE"
+
+[node name="FireButton" type="Button" parent="Ui/TopWindow/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "FIRE"
+
+[node name="player_playfield" parent="." instance=ExtResource("1_4vm7w")]
+
+[node name="enemy_playfield" parent="." instance=ExtResource("1_4vm7w")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -17, 0, 0)
+
+[node name="main_camera" type="Camera3D" parent="."]
+transform = Transform3D(-0.707107, -0.5, 0.5, 4.21469e-08, 0.707107, 0.707107, -0.707107, 0.5, -0.5, -4, 10, -4)
+fov = 40.0
+size = 15.0
+
+[node name="main_light" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.70032, 0.713086, -0.032564, -0.0472043, -0.000743912, 0.998885, 0.712266, 0.701076, 0.0341817, -10, 10, -10)
+
+[connection signal="pressed" from="Ui/TopWindow/VBoxContainer/StartButton" to="." method="_on_start_button_pressed"]
+[connection signal="pressed" from="Ui/TopWindow/VBoxContainer/RandomizeButton" to="." method="_on_randomize_button_pressed"]

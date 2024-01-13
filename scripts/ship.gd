@@ -1,24 +1,19 @@
 extends Area3D
 
+signal start_drag(ship)
+signal abort_drag
+signal rotate_ship(ship)
+
 var ghost_scene: PackedScene = null
 var ghost_prefab: PackedScene = preload("res://scenes/ghost.tscn")
 var wrong_material = preload("res://resources/ship_wrong_material.tres")
 
-@export var playfield: Node = null
 @export var placed: bool = false
 @export var drag_time: float = 0.2
 @export var ship_segments: int = 1
 
 @onready var shape_root = $ship_root
 @onready var _drag_timer = $drag_timer
-
-const ONE_ROT = deg_to_rad(90)
-
-@onready var TRANSFORM1 = Transform3D.IDENTITY.rotated(Vector3.UP, -ONE_ROT)
-@onready var TRANSFORM2 = Transform3D.IDENTITY.rotated(Vector3.UP, -(2 * ONE_ROT))
-
-var aligned = false
-var _mouse_inside = false
 
 
 func _ready():
@@ -32,21 +27,6 @@ func _ready():
 	_drag_timer.autostart = false
 	_drag_timer.one_shot = true
 	_drag_timer.wait_time = drag_time
-
-
-func align():
-	var trans: Transform3D = global_transform
-	if aligned:
-		return trans
-	
-	var init_rot_q = trans.basis.get_rotation_quaternion()
-	var t1q = TRANSFORM1.basis.get_rotation_quaternion()
-	var t2q = TRANSFORM2.basis.get_rotation_quaternion()
-	var tbasis = TRANSFORM2.basis
-	if t1q.angle_to(init_rot_q) < t2q.angle_to(init_rot_q):
-		tbasis = TRANSFORM1.basis
-
-	return Transform3D(tbasis, trans.origin)
 
 
 func get_points():
@@ -70,10 +50,10 @@ func show_ok():
 func _on_input_event(camera, event, position, normal, shape_idx):
 	if Input.is_action_just_pressed("tap"):
 		_drag_timer.start(drag_time)
-		playfield.start_drag(self)
+		start_drag.emit(self)
 	
 	if Input.is_action_just_released("tap"):
 		if _drag_timer.time_left:
-			playfield.abort_drag()
-			playfield.rotate_ship(self)
+			abort_drag.emit()
+			rotate_ship.emit(self)
 		_drag_timer.stop()
