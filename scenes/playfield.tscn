@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://cem2h2jy6cqjp"]
+[gd_scene load_steps=20 format=3 uid="uid://cem2h2jy6cqjp"]
 
 [ext_resource type="Script" path="res://scripts/playfield.gd" id="1_asv1g"]
 [ext_resource type="PackedScene" uid="uid://cg4anskkex7yw" path="res://scenes/grid_plane.tscn" id="2_vi7te"]
@@ -13,6 +13,7 @@
 [ext_resource type="PackedScene" uid="uid://b1u3pcykjdu3x" path="res://scenes/marker.tscn" id="11_mthu1"]
 [ext_resource type="Script" path="res://scripts/playfield_place_ship_state.gd" id="12_1ovsw"]
 [ext_resource type="Script" path="res://scripts/playefield_target_state.gd" id="13_waf6d"]
+[ext_resource type="Script" path="res://scripts/playfield_wait_state.gd" id="14_alqxp"]
 [ext_resource type="PackedScene" uid="uid://e0qrqa7eg276" path="res://scenes/missile.tscn" id="14_onjor"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_q48ue"]
@@ -206,6 +207,9 @@ script = ExtResource("12_1ovsw")
 
 [node name="TargetState" type="Node3D" parent="."]
 script = ExtResource("13_waf6d")
+
+[node name="WaitState" type="Node3D" parent="."]
+script = ExtResource("14_alqxp")
 
 [node name="Missile" parent="." instance=ExtResource("14_onjor")]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 5, 10, 5)

@@ -11,10 +11,9 @@ height = 0.4
 radial_segments = 8
 rings = 8
 
-[sub_resource type="PlaneMesh" id="PlaneMesh_4n3tp"]
+[sub_resource type="BoxMesh" id="BoxMesh_moxu2"]
 material = ExtResource("3_p4nmc")
-size = Vector2(0.2, 0.2)
-orientation = 0
+size = Vector3(0.2, 0.2, 0.2)
 
 [sub_resource type="Curve" id="Curve_k176b"]
 min_value = 0.5
@@ -34,7 +33,7 @@ mesh = SubResource("SphereMesh_lc71v")
 [node name="Smoke" type="CPUParticles3D" parent="."]
 emitting = false
 amount = 32
-mesh = SubResource("PlaneMesh_4n3tp")
+mesh = SubResource("BoxMesh_moxu2")
 direction = Vector3(0, 1, 0)
 spread = 6.0
 gravity = Vector3(0, 0, 0)

@@ -35,6 +35,15 @@ func enter_target_state():
 	state.set_marker(marker, Vector2i(5, 4))
 
 
+func enter_wait_state():
+	for ship in ships.get_children():	
+		ship.start_drag.disconnect(start_drag)
+		ship.abort_drag.disconnect(abort_drag)
+		ship.rotate_ship.disconnect(rotate_ship)
+	
+	state = $WaitState
+
+
 func is_ships_placed():
 	for ship in ships.get_children():
 		if not ship.placed:
@@ -64,6 +73,10 @@ func stop_drag():
 
 func resolve_shot():
 	return await state.resolve_shot(ships, marker)
+
+
+func resolve_enemy_shot():
+	await state.resolve_enemy_shot(ships)
 
 
 func _ready():

@@ -7,7 +7,7 @@ var _current: Vector2i = Vector2i.ZERO
 var _previous_shots: Dictionary = {}
 var _disable_tap = false
 
-const MISSILE_START_POS = Vector3(5, 6, 5)
+const MISSILE_START_POS = Vector3(10, 6, 10)
 
 
 func set_marker(marker: Node, pos: Vector2i):
@@ -32,7 +32,7 @@ func _fire_missile_at(pos: Vector2i):
 	add_child(missile)
 	
 	var tween = create_tween().set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_CUBIC)
-	tween.tween_property(missile, "transform", target_trans, 0.8)
+	tween.tween_property(missile, "transform", target_trans, 0.4)
 	
 	await tween.finished
 	missile.destroy()
@@ -76,7 +76,7 @@ func _is_hit(ships, shot_marker):
 
 func resolve_shot(ships, marker):
 	if _previous_shots.has(_current):
-		return false
+		return [false, false]
 
 	marker.hide()
 	await _fire_missile_at(_current)
@@ -97,7 +97,7 @@ func resolve_shot(ships, marker):
 	await tween.finished
 	
 
-	return true
+	return [true, hit]
 
 
 func do_process(_delta, drag_plane, _ships, marker):
