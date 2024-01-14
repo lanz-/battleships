@@ -1,0 +1,44 @@
+[gd_scene load_steps=8 format=3 uid="uid://1ywn7h38dqt0"]
+
+[ext_resource type="Script" path="res://scripts/shot_marker.gd" id="1_7rw4c"]
+[ext_resource type="Material" uid="uid://dre68bjahfjiv" path="res://resources/miss_marker_material.tres" id="2_3i7em"]
+[ext_resource type="Material" uid="uid://gtwcqqw1vnfy" path="res://resources/smoke_material.tres" id="3_p4nmc"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_lc71v"]
+material = ExtResource("2_3i7em")
+radius = 0.2
+height = 0.4
+radial_segments = 8
+rings = 8
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_4n3tp"]
+material = ExtResource("3_p4nmc")
+size = Vector2(0.2, 0.2)
+orientation = 0
+
+[sub_resource type="Curve" id="Curve_k176b"]
+min_value = 0.5
+max_value = 2.0
+_data = [Vector2(0, 0.5), 0.0, 2.1, 0, 0, Vector2(1, 2), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Gradient" id="Gradient_he0ip"]
+colors = PackedColorArray(0, 0, 0, 1, 0, 0, 0, 0)
+
+[node name="ShotMarker" type="Node3D"]
+script = ExtResource("1_7rw4c")
+
+[node name="Mesh" type="MeshInstance3D" parent="."]
+mesh = SubResource("SphereMesh_lc71v")
+
+[node name="Smoke" type="CPUParticles3D" parent="."]
+emitting = false
+amount = 32
+mesh = SubResource("PlaneMesh_4n3tp")
+direction = Vector3(0, 1, 0)
+spread = 6.0
+gravity = Vector3(0, 0, 0)
+initial_velocity_min = 1.0
+initial_velocity_max = 2.0
+scale_amount_curve = SubResource("Curve_k176b")
+color_ramp = SubResource("Gradient_he0ip")

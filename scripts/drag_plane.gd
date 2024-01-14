@@ -11,11 +11,11 @@ func _ready():
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
+func _process(_delta):
 	pass
 
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	var mouse_screen_pos: Vector2 = get_viewport().get_mouse_position()
 	var to: Vector3 = camera.global_position + camera.project_ray_normal(mouse_screen_pos) * 1000
 	

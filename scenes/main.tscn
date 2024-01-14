@@ -59,3 +59,4 @@ transform = Transform3D(-0.70032, 0.713086, -0.032564, -0.0472043, -0.000743912,
 
 [connection signal="pressed" from="Ui/TopWindow/VBoxContainer/StartButton" to="." method="_on_start_button_pressed"]
 [connection signal="pressed" from="Ui/TopWindow/VBoxContainer/RandomizeButton" to="." method="_on_randomize_button_pressed"]
+[connection signal="pressed" from="Ui/TopWindow/VBoxContainer/FireButton" to="." method="_on_fire_button_pressed"]

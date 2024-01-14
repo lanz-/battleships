@@ -27,11 +27,16 @@ const enemy_field_transform: Transform3D = Transform3D(
 
 func _ready():
 	main_camera.transform = player_field_transform
-	enemy_field.hide_ships()
+	enemy_field.enter_place_state()
+	enemy_field.place_random()
+	enemy_field.enter_target_state()
+
+	player_field.enter_place_state()
+
 	fire_button.hide()
 
 
-func _process(delta):
+func _process(_delta):
 	pass
 
 
@@ -45,8 +50,11 @@ func _on_start_button_pressed():
 		
 		_tween = create_tween().set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_CUBIC)
 		_tween.tween_property(main_camera, "transform", enemy_field_transform, 1.0)
-		_tween.tween_callback(enemy_field.place_random)
 
 
 func _on_randomize_button_pressed():
 	player_field.place_random()
+
+
+func _on_fire_button_pressed():
+	var resolved = await enemy_field.resolve_shot()

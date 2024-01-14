@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://cem2h2jy6cqjp"]
+[gd_scene load_steps=19 format=3 uid="uid://cem2h2jy6cqjp"]
 
 [ext_resource type="Script" path="res://scripts/playfield.gd" id="1_asv1g"]
 [ext_resource type="PackedScene" uid="uid://cg4anskkex7yw" path="res://scenes/grid_plane.tscn" id="2_vi7te"]
@@ -10,6 +10,10 @@
 [ext_resource type="ArrayMesh" uid="uid://bto1ymk0uyj0m" path="res://resources/ship3_2.obj" id="9_g2k4k"]
 [ext_resource type="ArrayMesh" uid="uid://cmjt3umeixevm" path="res://resources/ship3_3.obj" id="10_byopp"]
 [ext_resource type="ArrayMesh" uid="uid://cehr7avr3dcsn" path="res://resources/ship4.obj" id="11_0dnc1"]
+[ext_resource type="PackedScene" uid="uid://b1u3pcykjdu3x" path="res://scenes/marker.tscn" id="11_mthu1"]
+[ext_resource type="Script" path="res://scripts/playfield_place_ship_state.gd" id="12_1ovsw"]
+[ext_resource type="Script" path="res://scripts/playefield_target_state.gd" id="13_waf6d"]
+[ext_resource type="PackedScene" uid="uid://e0qrqa7eg276" path="res://scenes/missile.tscn" id="14_onjor"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_q48ue"]
 
@@ -78,7 +82,7 @@ shape = SubResource("BoxShape3D_q48ue")
 mesh = ExtResource("5_mjr2y")
 
 [node name="ship2_1" parent="ships" instance=ExtResource("5_git4x")]
-transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 1.12204, 0, -1.79866)
+transform = Transform3D(-1, 0, 1.50996e-07, 0, 1, 0, -1.50996e-07, 0, -1, 1.12204, 0, -1.79866)
 ship_segments = 2
 metadata/_edit_group_ = true
 
@@ -97,7 +101,7 @@ transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -1, 0,
 mesh = ExtResource("7_n65yn")
 
 [node name="ship2_2" parent="ships" instance=ExtResource("5_git4x")]
-transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 3.7767, 0, -1.79866)
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 3.7767, 0, -1.79866)
 ship_segments = 2
 metadata/_edit_group_ = true
 
@@ -194,3 +198,14 @@ shape = SubResource("BoxShape3D_k4kaj")
 [node name="segment_1" type="MeshInstance3D" parent="ships/ship4_1/ship_root"]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
 mesh = ExtResource("11_0dnc1")
+
+[node name="Marker" parent="." instance=ExtResource("11_mthu1")]
+
+[node name="PlaceShipState" type="Node3D" parent="."]
+script = ExtResource("12_1ovsw")
+
+[node name="TargetState" type="Node3D" parent="."]
+script = ExtResource("13_waf6d")
+
+[node name="Missile" parent="." instance=ExtResource("14_onjor")]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 5, 10, 5)

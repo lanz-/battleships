@@ -1,0 +1,29 @@
+[gd_scene load_steps=6 format=3 uid="uid://e0qrqa7eg276"]
+
+[ext_resource type="PackedScene" uid="uid://csfwj8bvey6iy" path="res://resources/missile.glb" id="1_a4dem"]
+[ext_resource type="Script" path="res://scripts/missile.gd" id="2_6omkn"]
+[ext_resource type="Material" uid="uid://gtwcqqw1vnfy" path="res://resources/smoke_material.tres" id="2_tayoe"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_o2wt0"]
+material = ExtResource("2_tayoe")
+size = Vector3(0.1, 0.1, 0.1)
+
+[sub_resource type="Gradient" id="Gradient_gxa7a"]
+colors = PackedColorArray(0, 0, 0, 1, 0, 0, 0, 0)
+
+[node name="Missile" instance=ExtResource("1_a4dem")]
+script = ExtResource("2_6omkn")
+
+[node name="Missile" parent="." index="0"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0)
+
+[node name="Smoke" type="CPUParticles3D" parent="." index="1"]
+amount = 256
+lifetime = 4.0
+mesh = SubResource("BoxMesh_o2wt0")
+direction = Vector3(0, 0, 1)
+spread = 5.0
+gravity = Vector3(0, 0, 0)
+initial_velocity_min = 1.0
+initial_velocity_max = 2.0
+color_ramp = SubResource("Gradient_gxa7a")
