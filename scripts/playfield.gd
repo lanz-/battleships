@@ -76,7 +76,7 @@ func resolve_shot():
 
 
 func resolve_enemy_shot():
-	await state.resolve_enemy_shot(ships)
+	await state.resolve_enemy_shot(ships, marker)
 
 
 func _ready():

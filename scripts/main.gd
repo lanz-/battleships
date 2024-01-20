@@ -40,12 +40,12 @@ func _process(_delta):
 	pass
 	
 
-func _look_at(transform):
+func _look_at(cam_transform):
 	if _tween:
 		_tween.kill()
 		
 	_tween = create_tween().set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_CUBIC)
-	_tween.tween_property(main_camera, "transform", transform, 1.0)
+	_tween.tween_property(main_camera, "transform", cam_transform, 1.0)
 
 
 func _on_start_button_pressed():
@@ -70,9 +70,9 @@ func _on_fire_button_pressed():
 	
 	if resolved and not extra_turn:
 		fire_button.hide()
-		await get_tree().create_timer(2.0).timeout
+		await get_tree().create_timer(0.8).timeout
 		_look_at(player_field_transform)
 		await player_field.resolve_enemy_shot()
-		await get_tree().create_timer(2.0).timeout
+		await get_tree().create_timer(0.8).timeout
 		_look_at(enemy_field_transform)
 		fire_button.show()

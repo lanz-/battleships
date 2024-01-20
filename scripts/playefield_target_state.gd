@@ -25,8 +25,6 @@ func _fire_missile_at(pos: Vector2i):
 	start_trans = start_trans.looking_at(pos3)
 	var target_trans = Transform3D(start_trans.basis, pos3)
 	
-	var camera: Camera3D = get_viewport().get_camera_3d()
-	
 	var missile = missile_scene.instantiate()
 	missile.transform = start_trans
 	add_child(missile)
@@ -40,7 +38,7 @@ func _fire_missile_at(pos: Vector2i):
 
 
 func _add_adjacent_miss_markers(ship):
-	var tween = create_tween().set_trans(Tween.TRANS_BOUNCE).set_parallel()
+	var tween = null 
 	
 	for point in ship.get_occupied_points().map(func (p): return Game.translate(p)):
 		if not Game.is_in_field(point):
@@ -55,6 +53,8 @@ func _add_adjacent_miss_markers(ship):
 		shot_marker.scale = Vector3(0.01, 0.01, 0.01)
 	
 		add_child(shot_marker)
+		if tween == null:
+			tween = create_tween().set_trans(Tween.TRANS_BOUNCE).set_parallel()
 		tween.tween_property(shot_marker, "scale", Vector3.ONE, 0.5)
 	
 	await tween.finished
