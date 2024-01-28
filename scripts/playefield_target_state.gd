@@ -57,7 +57,8 @@ func _add_adjacent_miss_markers(ship):
 			tween = create_tween().set_trans(Tween.TRANS_BOUNCE).set_parallel()
 		tween.tween_property(shot_marker, "scale", Vector3.ONE, 0.5)
 	
-	await tween.finished
+	if tween:
+		await tween.finished
 
 
 func _is_hit(ships, shot_marker):

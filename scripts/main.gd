@@ -15,9 +15,14 @@ const enemy_field_transform: Transform3D = Transform3D(
 	Vector3(-4, 10, -4),
 )
 
+
 @onready var main_camera = $main_camera
 @onready var player_field = $player_playfield
 @onready var enemy_field = $enemy_playfield
+
+@onready var win_label = $Ui/WinLabel
+@onready var lose_label = $Ui/LoseLabel
+@onready var mm_button = $Ui/MainMenuButton
 
 @onready var fire_button = $Ui/TopWindow/VBoxContainer/FireButton
 @onready var start_button = $Ui/TopWindow/VBoxContainer/StartButton
@@ -48,6 +53,21 @@ func _look_at(cam_transform):
 	_tween.tween_property(main_camera, "transform", cam_transform, 1.0)
 
 
+func _enemy_turn():
+	fire_button.hide()
+	await get_tree().create_timer(0.8).timeout
+	_look_at(player_field_transform)
+	await player_field.resolve_enemy_shot()
+	await get_tree().create_timer(0.8).timeout
+	_look_at(enemy_field_transform)
+	if player_field.no_alive_ships():
+		enemy_field.enter_game_over_state()
+		lose_label.show()
+		mm_button.show()
+	else:
+		fire_button.show()
+
+
 func _on_start_button_pressed():
 	if player_field.is_ships_placed():
 		player_field.enter_wait_state()
@@ -68,11 +88,15 @@ func _on_fire_button_pressed():
 	var resolved = resolution[0]
 	var extra_turn = resolution[1]
 	
-	if resolved and not extra_turn:
+	if enemy_field.no_alive_ships():
+		enemy_field.enter_game_over_state()
+		win_label.show()
+		mm_button.show()
 		fire_button.hide()
-		await get_tree().create_timer(0.8).timeout
-		_look_at(player_field_transform)
-		await player_field.resolve_enemy_shot()
-		await get_tree().create_timer(0.8).timeout
-		_look_at(enemy_field_transform)
-		fire_button.show()
+	else:
+		if resolved and not extra_turn:
+			await _enemy_turn()
+
+
+func _on_main_menu_button_pressed():
+	get_tree().change_scene_to_packed(Game.main_menu_scene)

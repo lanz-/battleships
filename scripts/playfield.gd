@@ -44,6 +44,21 @@ func enter_wait_state():
 	state = $WaitState
 
 
+func enter_game_over_state():
+	for ship in ships.get_children():
+		ship.show()
+	
+	state = $WaitState
+
+
+func no_alive_ships():
+	for ship in ships.get_children():
+		if not ship.is_destroyed():
+			return false
+	
+	return true
+
+
 func is_ships_placed():
 	for ship in ships.get_children():
 		if not ship.placed:

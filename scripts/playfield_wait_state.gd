@@ -104,6 +104,9 @@ func resolve_enemy_shot(ships: Node3D, marker: Node3D):
 	var is_hit = true
 	
 	while is_hit:
+		if len(_previous_shots) >= 100:
+			return
+		
 		var pos = _choose_shot_position()
 
 		await get_tree().create_timer(2.0).timeout

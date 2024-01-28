@@ -2,6 +2,7 @@ extends Node
 
 
 var _tween: Tween = null
+var main_menu_scene = preload("res://scenes/main_menu.tscn")
 
 
 func translate(pos: Vector3) -> Vector2i:

@@ -1,0 +1,108 @@
+[gd_scene load_steps=10 format=3 uid="uid://koli83mtqubg"]
+
+[ext_resource type="PackedScene" uid="uid://bqum1op5688vf" path="res://scenes/sea.tscn" id="1_60unc"]
+[ext_resource type="ArrayMesh" uid="uid://cehr7avr3dcsn" path="res://resources/ship4.obj" id="1_jwb47"]
+[ext_resource type="Script" path="res://scripts/main_menu.gd" id="1_r3uil"]
+[ext_resource type="ArrayMesh" uid="uid://cmjt3umeixevm" path="res://resources/ship3_3.obj" id="2_60kgm"]
+[ext_resource type="ArrayMesh" uid="uid://bto1ymk0uyj0m" path="res://resources/ship3_2.obj" id="3_3jkvd"]
+[ext_resource type="ArrayMesh" uid="uid://cjvvveejn82re" path="res://resources/ship3_1.obj" id="4_l2xn2"]
+[ext_resource type="ArrayMesh" uid="uid://cvkvh0owfbuag" path="res://resources/ship2_2.obj" id="6_y76pk"]
+[ext_resource type="ArrayMesh" uid="uid://brwfaepcduup0" path="res://resources/ship2_1.obj" id="7_ymq41"]
+[ext_resource type="Environment" uid="uid://dnu5mpnn1itgg" path="res://resources/env.tres" id="8_i32nj"]
+
+[node name="MainMenu" type="Node3D"]
+script = ExtResource("1_r3uil")
+
+[node name="MainCamera" type="Camera3D" parent="."]
+transform = Transform3D(0.887446, -0.298607, 0.351104, -0.0702043, 0.665298, 0.74327, -0.455535, -0.684261, 0.569452, 8.68102, 5.61437, 6)
+
+[node name="Sea" parent="." instance=ExtResource("1_60unc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18.7078, 0, -22.6261)
+
+[node name="Path3D" type="Path3D" parent="."]
+transform = Transform3D(0.988163, -0.12069, -0.0946987, 0.121041, 0.992646, -0.00205027, 0.0942497, -0.00943637, 0.995504, 0, 0, 0)
+
+[node name="battleship" type="Node3D" parent="."]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -1.54481, 0, 2.62985)
+
+[node name="Ship33" type="MeshInstance3D" parent="battleship"]
+mesh = ExtResource("2_60kgm")
+skeleton = NodePath("../..")
+
+[node name="Ship32" type="MeshInstance3D" parent="battleship"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1)
+mesh = ExtResource("3_3jkvd")
+skeleton = NodePath("../..")
+
+[node name="Ship31" type="MeshInstance3D" parent="battleship"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2)
+mesh = ExtResource("4_l2xn2")
+skeleton = NodePath("../..")
+
+[node name="battleship2" type="Node3D" parent="."]
+transform = Transform3D(-0.177703, 0, -0.984084, 0, 1, 0, 0.984084, 0, -0.177703, -1.54481, 0, -2.7218)
+
+[node name="Ship33" type="MeshInstance3D" parent="battleship2"]
+mesh = ExtResource("2_60kgm")
+skeleton = NodePath("../..")
+
+[node name="Ship32" type="MeshInstance3D" parent="battleship2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1)
+mesh = ExtResource("3_3jkvd")
+skeleton = NodePath("../..")
+
+[node name="Ship31" type="MeshInstance3D" parent="battleship2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2)
+mesh = ExtResource("4_l2xn2")
+skeleton = NodePath("../..")
+
+[node name="carrier" type="Node3D" parent="."]
+
+[node name="Carrier" type="MeshInstance3D" parent="carrier"]
+mesh = ExtResource("1_jwb47")
+skeleton = NodePath("../..")
+
+[node name="destroyer" type="Node3D" parent="."]
+transform = Transform3D(0.883692, 0, -0.468069, 0, 1, 0, 0.468069, 0, 0.883692, 5.53556, 0, 3.14478)
+
+[node name="Ship22" type="MeshInstance3D" parent="destroyer"]
+mesh = ExtResource("6_y76pk")
+skeleton = NodePath("../..")
+
+[node name="Ship21" type="MeshInstance3D" parent="destroyer"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1)
+mesh = ExtResource("7_ymq41")
+skeleton = NodePath("../..")
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="StartButton" type="Button" parent="Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -600.0
+offset_top = -300.0
+offset_right = -100.0
+offset_bottom = -100.0
+grow_horizontal = 0
+grow_vertical = 0
+size_flags_horizontal = 8
+size_flags_vertical = 8
+text = "START"
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.36329, 0.710948, 0.602141, 0.793819, -0.102127, 0.599517, 0.48772, 0.69579, -0.527262, 0, 4.69061, 0)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = ExtResource("8_i32nj")
+
+[connection signal="pressed" from="Control/StartButton" to="." method="_on_start_button_pressed"]
