@@ -12,6 +12,8 @@ var _draggable: Node = null
 var _drag_offset: Vector3 = Vector3.ZERO
 var _ghost: Node = null
 
+var _rotate: bool = false
+
 
 func is_ships_placed(ships: Node3D) -> bool:
 	for ship in ships.get_children():
@@ -35,14 +37,27 @@ func place_random(ships: Node3D):
 
 
 func rotate_ship(ship: Node, ships: Node3D):
+	if _rotate:
+		return
+
 	var ship_transform: Transform3D = ship.transform
 	var next_transform = ship_transform.rotated_local(Vector3.UP, ONE_ROT)
 	next_transform = next_transform.orthonormalized()
+	
+	_rotate = true
 
-	Game.animate_move(ship, next_transform, 0.4).tween_callback(validate_ships.bind(ships))
+	Game.animate_move(ship, next_transform, 0.4).tween_callback(_end_rotate.bind(ships))
+
+
+func _end_rotate(ships):
+	validate_ships(ships)
+	_rotate = false
 
 
 func start_drag(draggable: Node, drag_plane: Node3D):
+	if _rotate:
+		return
+	
 	if _drag:
 		return
 
