@@ -2,7 +2,9 @@ extends Node
 
 
 var _tween: Tween = null
+var is_multiplayer = false
 var main_menu_scene = preload("res://scenes/main_menu.tscn")
+var gameplay_scene = preload("res://scenes/main.tscn")
 
 
 func translate(pos: Vector3) -> Vector2i:
@@ -31,3 +33,13 @@ func animate_move(obj, trans, time):
 	_tween.tween_property(obj, "transform", trans, time)
 	
 	return _tween
+
+
+func start(_is_multiplayer):
+	is_multiplayer = _is_multiplayer
+	get_tree().change_scene_to_packed(gameplay_scene)
+	
+
+func ships_placed():
+	if is_multiplayer:
+		Lobby.placement_completed.rpc_id(1, false)

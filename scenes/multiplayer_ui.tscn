@@ -1,0 +1,51 @@
+[gd_scene load_steps=2 format=3 uid="uid://ci5n76o1j7tdd"]
+
+[ext_resource type="Script" path="res://scripts/multiplayer_ui.gd" id="1_aiflh"]
+
+[node name="MultiplayerUI" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_aiflh")
+
+[node name="HBoxMain" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ItemList" type="ItemList" parent="HBoxMain"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="VBoxButtons" type="VBoxContainer" parent="HBoxMain"]
+layout_mode = 2
+
+[node name="GameName" type="LineEdit" parent="HBoxMain/VBoxButtons"]
+layout_mode = 2
+placeholder_text = "<game name>"
+alignment = 1
+
+[node name="CreateButton" type="Button" parent="HBoxMain/VBoxButtons"]
+custom_minimum_size = Vector2(300, 100)
+layout_mode = 2
+text = "CREATE GAME"
+
+[node name="JoinButton" type="Button" parent="HBoxMain/VBoxButtons"]
+custom_minimum_size = Vector2(300, 100)
+layout_mode = 2
+text = "JOIN GAME"
+
+[node name="CancelButton" type="Button" parent="HBoxMain/VBoxButtons"]
+custom_minimum_size = Vector2(300, 100)
+layout_mode = 2
+text = "CANCEL"
+
+[connection signal="pressed" from="HBoxMain/VBoxButtons/CreateButton" to="." method="_on_create_button_pressed"]
+[connection signal="pressed" from="HBoxMain/VBoxButtons/JoinButton" to="." method="_on_join_button_pressed"]
+[connection signal="pressed" from="HBoxMain/VBoxButtons/CancelButton" to="." method="_on_cancel_button_pressed"]

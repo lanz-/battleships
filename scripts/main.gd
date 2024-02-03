@@ -32,8 +32,13 @@ const enemy_field_transform: Transform3D = Transform3D(
 
 func _ready():
 	main_camera.transform = player_field_transform
-	enemy_field.enter_place_state()
-	enemy_field.place_random()
+	
+	if Game.is_multiplayer:
+		enemy_field.clear_ships()
+	else:
+		enemy_field.enter_place_state()
+		enemy_field.place_random()
+	
 	enemy_field.enter_target_state()
 
 	player_field.enter_place_state()
@@ -70,12 +75,16 @@ func _enemy_turn():
 
 func _on_start_button_pressed():
 	if player_field.is_ships_placed():
+		var goes_first = Game.ships_placed()
 		player_field.enter_wait_state()
 		
-		fire_button.show()
 		start_button.hide()
 		randomize_button.hide()
 		
+		if not goes_first:
+			await _enemy_turn()
+
+		fire_button.show()
 		_look_at(enemy_field_transform)
 
 

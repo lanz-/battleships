@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://koli83mtqubg"]
+[gd_scene load_steps=11 format=3 uid="uid://koli83mtqubg"]
 
 [ext_resource type="PackedScene" uid="uid://bqum1op5688vf" path="res://scenes/sea.tscn" id="1_60unc"]
 [ext_resource type="ArrayMesh" uid="uid://cehr7avr3dcsn" path="res://resources/ship4.obj" id="1_jwb47"]
@@ -9,6 +9,7 @@
 [ext_resource type="ArrayMesh" uid="uid://cvkvh0owfbuag" path="res://resources/ship2_2.obj" id="6_y76pk"]
 [ext_resource type="ArrayMesh" uid="uid://brwfaepcduup0" path="res://resources/ship2_1.obj" id="7_ymq41"]
 [ext_resource type="Environment" uid="uid://dnu5mpnn1itgg" path="res://resources/env.tres" id="8_i32nj"]
+[ext_resource type="PackedScene" uid="uid://ci5n76o1j7tdd" path="res://scenes/multiplayer_ui.tscn" id="9_k4wxv"]
 
 [node name="MainMenu" type="Node3D"]
 script = ExtResource("1_r3uil")
@@ -74,7 +75,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1)
 mesh = ExtResource("7_ymq41")
 skeleton = NodePath("../..")
 
-[node name="Control" type="Control" parent="."]
+[node name="MultiplayerUI" parent="." instance=ExtResource("9_k4wxv")]
+visible = false
+
+[node name="MainMenuWindow" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -82,27 +86,35 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="StartButton" type="Button" parent="Control"]
+[node name="ButtonBox" type="VBoxContainer" parent="MainMenuWindow"]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -600.0
-offset_top = -300.0
+offset_left = -500.0
+offset_top = -400.0
 offset_right = -100.0
 offset_bottom = -100.0
 grow_horizontal = 0
 grow_vertical = 0
-size_flags_horizontal = 8
-size_flags_vertical = 8
-text = "START"
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+[node name="VSCPUButton" type="Button" parent="MainMenuWindow/ButtonBox"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "VS CPU"
+
+[node name="MultiplayerButton" type="Button" parent="MainMenuWindow/ButtonBox"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "MULTIPLAYER"
+
+[node name="MainLight" type="DirectionalLight3D" parent="."]
 transform = Transform3D(-0.36329, 0.710948, 0.602141, 0.793819, -0.102127, 0.599517, 0.48772, 0.69579, -0.527262, 0, 4.69061, 0)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = ExtResource("8_i32nj")
 
-[connection signal="pressed" from="Control/StartButton" to="." method="_on_start_button_pressed"]
+[connection signal="pressed" from="MainMenuWindow/ButtonBox/VSCPUButton" to="." method="_on_start_button_pressed"]
+[connection signal="pressed" from="MainMenuWindow/ButtonBox/MultiplayerButton" to="." method="_on_multiplayer_button_pressed"]
