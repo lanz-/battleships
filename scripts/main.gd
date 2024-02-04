@@ -33,17 +33,16 @@ const enemy_field_transform: Transform3D = Transform3D(
 func _ready():
 	main_camera.transform = player_field_transform
 	
-	if Game.is_multiplayer:
-		enemy_field.clear_ships()
-	else:
-		enemy_field.enter_place_state()
-		enemy_field.place_random()
+	enemy_field.enter_place_state()
 	
-	enemy_field.enter_target_state()
+	if not Game.is_multiplayer:
+		enemy_field.place_random()
 
 	player_field.enter_place_state()
 
 	fire_button.hide()
+	
+	Lobby.connection_failed.connect(_on_main_menu_button_pressed)
 
 
 func _process(_delta):
@@ -75,13 +74,18 @@ func _enemy_turn():
 
 func _on_start_button_pressed():
 	if player_field.is_ships_placed():
-		var goes_first = Game.ships_placed()
 		player_field.enter_wait_state()
 		
 		start_button.hide()
 		randomize_button.hide()
 		
-		if not goes_first:
+		var enemy_ship_list = await Game.ships_placed(player_field.serialize_ships())
+		if enemy_ship_list:
+			enemy_field.deserialize_ships(enemy_ship_list)
+
+		enemy_field.enter_target_state()
+		
+		if not Game.host:
 			await _enemy_turn()
 
 		fire_button.show()
@@ -93,6 +97,8 @@ func _on_randomize_button_pressed():
 
 
 func _on_fire_button_pressed():
+	fire_button.disabled = true
+	
 	var resolution = await enemy_field.resolve_shot()
 	var resolved = resolution[0]
 	var extra_turn = resolution[1]
@@ -106,6 +112,8 @@ func _on_fire_button_pressed():
 		if resolved and not extra_turn:
 			await _enemy_turn()
 
+	fire_button.disabled = false
+
 
 func _on_main_menu_button_pressed():
-	get_tree().change_scene_to_packed(Game.main_menu_scene)
+	Game.return_to_main_menu()

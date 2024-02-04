@@ -43,11 +43,16 @@ func damage(marker):
 	_markers.append(marker)
 	_damage += 1
 	if _damage >= ship_segments:
-		var sink_trans = transform.rotated_local(Vector3.RIGHT, SINK_ROT).translated(Vector3.DOWN * 0.1)
-		var tween = create_tween().set_trans(Tween.TRANS_CUBIC)
-		tween.tween_property(self, "transform", sink_trans, 3.0)
-		for a_marker in _markers:
-			a_marker.stop_smoke()
+		destroy()
+
+
+func destroy():
+	_damage = ship_segments
+	var sink_trans = transform.rotated_local(Vector3.RIGHT, SINK_ROT).translated(Vector3.DOWN * 0.1)
+	var tween = create_tween().set_trans(Tween.TRANS_CUBIC)
+	tween.tween_property(self, "transform", sink_trans, 3.0)
+	for a_marker in _markers:
+		a_marker.stop_smoke()
 
 
 func is_destroyed() -> bool:
@@ -65,6 +70,17 @@ func get_occupied_points() -> Array[Vector3]:
 
 func get_placed_points():
 	return get_points().map(func (p): return transform * p)
+
+
+func find_markers(candidates: Array):
+	var found = []
+	for candidate in candidates:
+		for point in get_placed_points():
+			if (point - candidate.position).length() < 0.1:
+				found.append(candidate)
+				break
+	
+	return found
 
 
 func get_points():

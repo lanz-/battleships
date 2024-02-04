@@ -7,6 +7,14 @@ extends Node3D
 @onready var state: Node = $PlaceShipState
 
 
+func _ready():
+	pass
+
+
+func _process(delta):
+	state.do_process(delta, drag_plane, ships, marker)
+
+
 func enter_place_state():
 	for ship in ships.get_children():
 		ship.show()
@@ -94,9 +102,31 @@ func resolve_enemy_shot():
 	await state.resolve_enemy_shot(ships, marker)
 
 
-func _ready():
-	pass
+func serialize_ships():
+	var result = []
+	for ship in ships.get_children():
+		result.append([ship.ship_segments, ship.transform])
+	
+	return result
 
 
-func _process(delta):
-	state.do_process(delta, drag_plane, ships, marker)
+func deserialize_ships(ship_list):
+	for ship in ships.get_children():
+		ship.placed = false
+	
+	for ship_data in ship_list:
+		var segments = ship_data[0]
+		var trans = ship_data[1]
+		
+		for ship in ships.get_children():
+			if ship.placed:
+				continue
+			
+			if ship.ship_segments != segments:
+				continue
+			
+			ship.transform = trans
+			ship.placed = true
+			break
+	
+	state.validate_ships(ships)

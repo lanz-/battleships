@@ -65,20 +65,20 @@ func _is_hit(pos, ships, shot_marker):
 					if target_index != -1:
 						_targeted_ships.remove_at(target_index)
 					_add_adjacent_miss_markers(ship)
+
 				return true
-	
+
 	return false
 	
 
 func _try_shoot(pos: Vector2i, ships: Node3D, marker: Node3D):
-	await _fire_missile_at(pos, marker)
-	
 	var shot_marker = shot_marker_scene.instantiate()
 	shot_marker.position = Game.untranslate(pos)
 	shot_marker.scale = Vector3(0.01, 0.01, 0.01)
-	
 	add_child(shot_marker)
 	_previous_shots[pos] = true
+	
+	await _fire_missile_at(pos, marker)
 	
 	var hit = _is_hit(pos, ships, shot_marker)
 	
@@ -90,6 +90,10 @@ func _try_shoot(pos: Vector2i, ships: Node3D, marker: Node3D):
 
 
 func _choose_shot_position():
+	if Game.is_multiplayer:
+		return await Lobby.fired_at
+	
+	await get_tree().create_timer(2.0).timeout
 	if _targeted_ships:
 		return _targeted_ships[0].next_position(_previous_shots)
 	else:
@@ -98,6 +102,14 @@ func _choose_shot_position():
 			pos = Vector2i(randi_range(0, 9), randi_range(0, 9))
 		
 		return pos
+		
+
+func _no_alive_ships(ships: Node3D):
+	for ship in ships.get_children():
+		if not ship.is_destroyed():
+			return false
+	
+	return true
 
 
 func resolve_enemy_shot(ships: Node3D, marker: Node3D):
@@ -107,11 +119,14 @@ func resolve_enemy_shot(ships: Node3D, marker: Node3D):
 		if len(_previous_shots) >= 100:
 			return
 		
-		var pos = _choose_shot_position()
+		if _no_alive_ships(ships):
+			return
+		
+		var pos = await _choose_shot_position()
 
-		await get_tree().create_timer(2.0).timeout
 		is_hit = await _try_shoot(pos, ships, marker)
-
+		if Game.is_multiplayer:
+			Lobby.fence_fire()
 
 
 func do_process(_delta, _drag_plane, _ships, _marker):

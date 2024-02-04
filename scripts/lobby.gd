@@ -4,10 +4,15 @@ signal connection_failed
 signal update_game_list(game_list)
 signal game_joined
 signal game_created
+signal game_can_start
+signal show_ships
+signal fired_at(pos)
+
+signal _fence
 
 const SERVER_ADDRESS = "ws://127.0.0.1:5858"
 
-var _game_list = []
+var _fence_flag = false
 
 
 # Called when the node enters the scene tree for the first time.
@@ -28,11 +33,6 @@ func _on_connection_failed():
 func _on_server_disconnected():
 	connection_failed.emit()
 	
-	
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass
-
 
 func reconnect_to_server():
 	if multiplayer.multiplayer_peer:
@@ -48,13 +48,28 @@ func disconnect_from_server():
 		multiplayer.multiplayer_peer = null
 
 
+func fence_start():
+	_fence_flag = false
+
+
+func fence_wait():
+	if _fence_flag:
+		return
+	
+	await _fence
+
+
+func fence_fire():
+	fence_fire_remote.rpc_id(1)
+
+
 @rpc("reliable")
-func create_game(name: String):
+func create_game(_name: String):
 	game_created.emit()
 
 
 @rpc("reliable")
-func join_game(name: String):
+func join_game(_name: String):
 	game_joined.emit()
 
 
@@ -65,5 +80,21 @@ func set_game_list(game_list: Array):
 
 
 @rpc("reliable")
-func placement_completed(goes_first: bool):
-	print("Placement completed, goes first %s" % goes_first)
+func placement_completed(ship_list: Array):
+	game_can_start.emit(ship_list)
+
+
+@rpc("reliable")
+func fire_at(pos: Vector2i):
+	fired_at.emit(pos)
+
+
+@rpc("reliable")
+func fence_fire_remote():
+	_fence_flag = true
+	_fence.emit()
+
+
+@rpc("reliable")
+func peer_left_the_game():
+	connection_failed.emit()

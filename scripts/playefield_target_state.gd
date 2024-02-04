@@ -61,7 +61,7 @@ func _add_adjacent_miss_markers(ship):
 		await tween.finished
 
 
-func _is_hit(ships, shot_marker):
+func _resolve_hit(ships, shot_marker):
 	for ship in ships.get_children():
 		for point in ship.get_placed_points().map(func (p): return Game.translate(p)):
 			if point == _current:
@@ -80,6 +80,9 @@ func resolve_shot(ships, marker):
 		return [false, false]
 
 	marker.hide()
+	if Game.is_multiplayer:
+		Lobby.fence_start()
+		Lobby.fire_at.rpc_id(1, _current)
 	await _fire_missile_at(_current)
 	marker.show()
 
@@ -90,13 +93,14 @@ func resolve_shot(ships, marker):
 	add_child(shot_marker)
 	_previous_shots[_current] = true
 	
-	var hit = _is_hit(ships, shot_marker)
+	var hit = _resolve_hit(ships, shot_marker)
 	
 	
 	var tween = create_tween().set_trans(Tween.TRANS_BOUNCE)
 	tween.tween_property(shot_marker, "scale", Vector3.ONE, 0.5)
 	await tween.finished
-	
+	if Game.is_multiplayer:
+		await Lobby.fence_wait()
 
 	return [true, hit]
 

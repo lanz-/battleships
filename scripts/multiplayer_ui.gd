@@ -18,17 +18,13 @@ func _ready():
 	Lobby.game_joined.connect(_on_game_joined)
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass
-
-
 func _on_create_button_pressed():
-	var name = game_name_edit.text
-	if not name:
+	var game_name = game_name_edit.text
+	if not game_name:
 		return
 	
-	Lobby.create_game.rpc_id(1, name)
+	Game.host = true
+	Lobby.create_game.rpc_id(1, game_name)
 
 
 func _on_join_button_pressed():
@@ -37,8 +33,9 @@ func _on_join_button_pressed():
 
 	var selected_idx = game_list_ui.get_selected_items()[0]
 	
-	var name = game_list_ui.get_item_text(selected_idx)
-	Lobby.join_game.rpc_id(1, name)
+	var game_name = game_list_ui.get_item_text(selected_idx)
+	Game.host = false
+	Lobby.join_game.rpc_id(1, game_name)
 
 
 func _on_cancel_button_pressed():
