@@ -10,7 +10,7 @@ signal fired_at(pos)
 
 signal _fence
 
-const SERVER_ADDRESS = "ws://127.0.0.1:5858"
+const SERVER_ADDRESS = "wss://battleship.lanz.su:4443"
 
 var _fence_flag = false
 
