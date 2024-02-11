@@ -1,0 +1,68 @@
+[gd_scene load_steps=2 format=3 uid="uid://dlxe1gjhks735"]
+
+[ext_resource type="Script" path="res://scripts/modal_window.gd" id="1_k740u"]
+
+[node name="ModalWindow" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_k740u")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -300.0
+offset_top = -100.0
+offset_right = 300.0
+offset_bottom = 100.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TopVBox" type="VBoxContainer" parent="Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="Panel/TopVBox"]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 3.0
+theme_override_font_sizes/font_size = 25
+text = "ENTER TEXT HERE"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="LineEdit" type="LineEdit" parent="Panel/TopVBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 25
+placeholder_text = "<PLACEHOLDER>"
+alignment = 1
+
+[node name="ButtonHBox" type="HBoxContainer" parent="Panel/TopVBox"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="OKButton" type="Button" parent="Panel/TopVBox/ButtonHBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 25
+text = "OK"
+
+[node name="CancelButton" type="Button" parent="Panel/TopVBox/ButtonHBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 25
+text = "Cancel"
+
+[connection signal="pressed" from="Panel/TopVBox/ButtonHBox/OKButton" to="." method="_on_ok_button_pressed"]
+[connection signal="pressed" from="Panel/TopVBox/ButtonHBox/CancelButton" to="." method="_on_cancel_button_pressed"]

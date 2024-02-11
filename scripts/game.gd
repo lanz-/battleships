@@ -44,6 +44,7 @@ func start(_is_multiplayer):
 
 
 func return_to_main_menu():
+	Lobby.disconnect_from_server()
 	get_tree().change_scene_to_packed(main_menu_scene)
 	
 

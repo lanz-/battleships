@@ -4,10 +4,10 @@ extends Control
 signal return_from_menu
 signal start_multiplayer
 
-@onready var game_list_ui = $HBoxMain/ItemList
-@onready var game_name_edit = $HBoxMain/VBoxButtons/GameName
-@onready var create_button = $HBoxMain/VBoxButtons/CreateButton
-@onready var join_button = $HBoxMain/VBoxButtons/JoinButton
+@onready var game_list_ui = $TopVBox/ItemHBox/ItemList
+@onready var create_button = $TopVBox/ButtonHBox/CreateButton
+@onready var join_button = $TopVBox/ButtonHBox/JoinButton
+@onready var modal_scene = preload("res://scenes/modal_window.tscn")
 
 
 # Called when the node enters the scene tree for the first time.
@@ -19,8 +19,16 @@ func _ready():
 
 
 func _on_create_button_pressed():
-	var game_name = game_name_edit.text
-	if not game_name:
+	var modal = modal_scene.instantiate()
+	add_child(modal)
+
+	var result = await modal.show_modal(
+		"Host a new game", true, "<game name>"
+	)
+	var game_name = modal.edit.text
+	modal.queue_free()
+	
+	if (result != ModalWindow.OK) or (not game_name):
 		return
 	
 	Game.host = true
@@ -59,7 +67,6 @@ func _on_connection_failed():
 
 
 func _on_game_created():
-	game_name_edit.editable = false
 	join_button.hide()
 	create_button.hide()
 
@@ -69,7 +76,6 @@ func _on_game_joined():
 
 
 func enter_multiplayer():
-	game_name_edit.editable = true
 	join_button.show()
 	create_button.show()
 	Lobby.reconnect_to_server()

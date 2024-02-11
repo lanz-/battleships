@@ -39,7 +39,11 @@ func reconnect_to_server():
 		multiplayer.multiplayer_peer = null
 	
 	var peer = WebSocketMultiplayerPeer.new()
-	peer.create_client(SERVER_ADDRESS)
+	
+	if OS.has_feature("editor"):
+		peer.create_client("wss://localhost:4443", TLSOptions.client_unsafe())
+	else:
+		peer.create_client(SERVER_ADDRESS)
 	multiplayer.multiplayer_peer = peer
 
 

@@ -15,7 +15,6 @@ const enemy_field_transform: Transform3D = Transform3D(
 	Vector3(-4, 10, -4),
 )
 
-
 @onready var main_camera = $main_camera
 @onready var player_field = $player_playfield
 @onready var enemy_field = $enemy_playfield
@@ -27,8 +26,12 @@ const enemy_field_transform: Transform3D = Transform3D(
 @onready var fire_button = $Ui/TopWindow/VBoxContainer/FireButton
 @onready var start_button = $Ui/TopWindow/VBoxContainer/StartButton
 @onready var randomize_button = $Ui/TopWindow/VBoxContainer/RandomizeButton
+@onready var wait_pane = $Ui/TopWindow/VBoxContainer/WaitPanel
 
 @onready var _tween: Tween = null
+@onready var _wait_window_scene: PackedScene = preload("res://scenes/wait_for.tscn")
+@onready var _modal_scene: PackedScene = preload("res://scenes/modal_window.tscn")
+
 
 func _ready():
 	main_camera.transform = player_field_transform
@@ -59,11 +62,15 @@ func _look_at(cam_transform):
 
 func _enemy_turn():
 	fire_button.hide()
+	wait_pane.show()
+	
 	await get_tree().create_timer(0.8).timeout
 	_look_at(player_field_transform)
 	await player_field.resolve_enemy_shot()
 	await get_tree().create_timer(0.8).timeout
 	_look_at(enemy_field_transform)
+	wait_pane.hide()
+	
 	if player_field.no_alive_ships():
 		enemy_field.enter_game_over_state()
 		lose_label.show()
@@ -79,7 +86,15 @@ func _on_start_button_pressed():
 		start_button.hide()
 		randomize_button.hide()
 		
+		var wait_window = _wait_window_scene.instantiate()
+		add_child(wait_window)
+		wait_window.wait_for("Waiting for an opponent to place their ships")
+		wait_window.cancelled.connect(_on_main_menu_button_pressed)
+		
 		var enemy_ship_list = await Game.ships_placed(player_field.serialize_ships())
+		wait_window.close()
+		wait_window.queue_free()
+		
 		if enemy_ship_list:
 			enemy_field.deserialize_ships(enemy_ship_list)
 
@@ -113,6 +128,19 @@ func _on_fire_button_pressed():
 			await _enemy_turn()
 
 	fire_button.disabled = false
+
+
+func _on_main_menu_button_pressed_safe():
+	var modal = _modal_scene.instantiate()
+	add_child(modal)
+	
+	var result = await modal.show_modal("Quit to main menu, are you sure?", false, "")
+	modal.queue_free()
+	
+	if ModalWindow.OK != result:
+		return
+	
+	Game.return_to_main_menu()
 
 
 func _on_main_menu_button_pressed():

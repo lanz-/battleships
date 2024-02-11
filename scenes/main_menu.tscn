@@ -103,11 +103,13 @@ grow_vertical = 0
 [node name="VSCPUButton" type="Button" parent="MainMenuWindow/ButtonBox"]
 layout_mode = 2
 size_flags_vertical = 3
+theme_override_font_sizes/font_size = 25
 text = "VS CPU"
 
 [node name="MultiplayerButton" type="Button" parent="MainMenuWindow/ButtonBox"]
 layout_mode = 2
 size_flags_vertical = 3
+theme_override_font_sizes/font_size = 25
 text = "MULTIPLAYER"
 
 [node name="MainLight" type="DirectionalLight3D" parent="."]

@@ -1,7 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://7xpyc1y76rkh"]
+[gd_scene load_steps=7 format=3 uid="uid://7xpyc1y76rkh"]
 
 [ext_resource type="PackedScene" uid="uid://cem2h2jy6cqjp" path="res://scenes/playfield.tscn" id="1_4vm7w"]
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_w32tw"]
+[ext_resource type="PackedScene" uid="uid://bc0q1me38jit0" path="res://scenes/wait_panel.tscn" id="2_li357"]
 [ext_resource type="PackedScene" uid="uid://bqum1op5688vf" path="res://scenes/sea.tscn" id="3_48kwx"]
 [ext_resource type="Environment" uid="uid://dnu5mpnn1itgg" path="res://resources/env.tres" id="4_nk2l2"]
 
@@ -33,20 +34,33 @@ grow_horizontal = 0
 [node name="VBoxContainer" type="VBoxContainer" parent="Ui/TopWindow"]
 layout_mode = 2
 
+[node name="MainMenuButton" type="Button" parent="Ui/TopWindow/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/font_size = 25
+text = "MAIN MENU"
+
 [node name="StartButton" type="Button" parent="Ui/TopWindow/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
+theme_override_font_sizes/font_size = 25
 text = "START"
 
 [node name="RandomizeButton" type="Button" parent="Ui/TopWindow/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
+theme_override_font_sizes/font_size = 25
 text = "RANDOMIZE"
 
 [node name="FireButton" type="Button" parent="Ui/TopWindow/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
+theme_override_font_sizes/font_size = 25
 text = "FIRE"
+
+[node name="WaitPanel" parent="Ui/TopWindow/VBoxContainer" instance=ExtResource("2_li357")]
+visible = false
+layout_mode = 2
 
 [node name="LoseLabel" type="Label" parent="Ui"]
 visible = false
@@ -116,6 +130,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
 environment = ExtResource("4_nk2l2")
 camera_attributes = SubResource("CameraAttributesPractical_c8rcm")
 
+[connection signal="pressed" from="Ui/TopWindow/VBoxContainer/MainMenuButton" to="." method="_on_main_menu_button_pressed_safe"]
 [connection signal="pressed" from="Ui/TopWindow/VBoxContainer/StartButton" to="." method="_on_start_button_pressed"]
 [connection signal="pressed" from="Ui/TopWindow/VBoxContainer/RandomizeButton" to="." method="_on_randomize_button_pressed"]
 [connection signal="pressed" from="Ui/TopWindow/VBoxContainer/FireButton" to="." method="_on_fire_button_pressed"]
