@@ -3,6 +3,7 @@ extends Node
 signal connection_failed
 signal update_game_list(game_list)
 signal game_joined
+signal game_not_found
 signal game_created
 signal game_can_start
 signal show_ships
@@ -68,13 +69,16 @@ func fence_fire():
 
 
 @rpc("reliable")
-func create_game(_name: String):
+func create_game(_name: String, _private: bool):
 	game_created.emit()
 
 
 @rpc("reliable")
 func join_game(_name: String):
-	game_joined.emit()
+	if _name:
+		game_joined.emit()
+	else:
+		game_not_found.emit()
 
 
 @rpc("reliable")

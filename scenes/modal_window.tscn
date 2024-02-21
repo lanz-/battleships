@@ -48,6 +48,10 @@ theme_override_font_sizes/font_size = 25
 placeholder_text = "<PLACEHOLDER>"
 alignment = 1
 
+[node name="PrivateCheck" type="CheckBox" parent="Panel/TopVBox"]
+layout_mode = 2
+text = "Make private game"
+
 [node name="ButtonHBox" type="HBoxContainer" parent="Panel/TopVBox"]
 layout_mode = 2
 size_flags_vertical = 3

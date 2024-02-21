@@ -8,6 +8,7 @@ signal _close_modal(result)
 @onready var ok_button = $Panel/TopVBox/ButtonHBox/OKButton
 @onready var cancel_button = $Panel/TopVBox/ButtonHBox/CancelButton
 @onready var edit = $Panel/TopVBox/LineEdit
+@onready var private_check = $Panel/TopVBox/PrivateCheck
 @onready var label = $Panel/TopVBox/Label
 
 
@@ -25,7 +26,12 @@ func _on_cancel_button_pressed():
 	_close_modal.emit(CANCEL)
 
 
-func show_modal(label_text: String, input: bool, input_placeholder: String):
+func show_modal(label_text: String, input: bool, input_placeholder: String, check: bool):
+	if check:
+		private_check.show()
+	else:
+		private_check.hide()
+	
 	if input:
 		edit.show()
 		edit.placeholder_text = input_placeholder
